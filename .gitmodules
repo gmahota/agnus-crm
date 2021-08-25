@@ -1,0 +1,3 @@
+[submodule "strapi-agnus-crm"]
+	path = strapi-agnus-crm
+	url = https://github.com/gmahota/strapi-agnus-crm.git
