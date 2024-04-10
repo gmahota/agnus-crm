@@ -1,0 +1,177 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+}
+
+model User {
+  id              Int      @id @default(autoincrement())
+  email           String   @unique
+  name            String?
+  username        String?
+  firstName       String?
+  lastName        String?
+  phoneNumber     String
+  password        String?
+  confirmPassword Boolean?
+  inactive        Boolean? @default(false)
+  country         String? @default("Moz")
+  profile         Profile?
+}
+
+model Profile {
+  id     Int     @id @default(autoincrement())
+  bio    String?
+  userId Int?    @unique
+  user   User?   @relation(fields: [userId], references: [id])
+}
+
+model Customer {
+  id           Int       @id @default(autoincrement())
+  code        String?
+  name         String?   @db.VarChar(50)
+  address      String?   @db.VarChar(50)
+  vat          String?   @db.VarChar(20)
+  province     String?   @db.VarChar(50)
+  phoneNumber  String    @db.VarChar(20)
+  cellphone   String?
+  email       String?
+  status       String?   @db.VarChar(255)
+  json        String?
+  leads        Lead[]  
+  opportunities Opportunity[] 
+}
+
+model Product {
+  id          Int     @id @default(autoincrement())
+  code        String  @db.VarChar(50)
+  description String  @db.VarChar(50)
+  price       Float
+}
+
+model Project {
+  id          Int     @id @default(autoincrement())
+  code        String? @db.VarChar(50)
+  description String  @db.VarChar(50)
+  status      String  @db.VarChar(20)
+}
+
+model AccountExecutive {
+  id            String      @id @default(cuid())
+  name          String?
+  description   String?
+  phone         String?
+  email         String?
+  street1       String?
+  street2       String?
+  city          String?
+  province      String?
+  country       String?
+  systemUserID  String?
+  createdAt     DateTime?   @default(now())
+  leads         Lead[]      
+  opportunities Opportunity[] 
+}
+
+model Activity {
+  id           String     @id @default(cuid())
+  name         String?
+  createdAt    DateTime?  @default(now())
+  description  String?
+  colorHex     String?
+  leadlines    LeadLine[] 
+}
+
+model Channel {
+  id           String     @id @default(cuid())
+  name         String?
+  createdAt    DateTime?  @default(now())
+  description  String?
+  colorHex     String?
+  leads        Lead[]    
+}
+
+model Lead {
+  id               String          @id @default(cuid())
+  name             String
+  description      String?
+  street1          String?
+  street2          String?
+  city             String?
+  province         String?
+  country          String?
+  isQualified      Boolean?
+  isConverted      Boolean?
+  channelId        String?
+  customerId    Int?
+  channel          Channel? @relation(fields: [channelId], references: [id])
+  customer      Customer? @relation(fields: [customerId], references: [id])
+  accountExecutiveId String?
+  accountExecutive AccountExecutive? @relation(fields: [accountExecutiveId], references: [id])
+  leadlines        LeadLine[]      
+  createdAt        DateTime?       @default(now())
+}
+
+model LeadLine {
+  id         String     @id @default(cuid())
+  name       String
+  description String?
+  startDate  DateTime?
+  endDate    DateTime?
+  createdAt  DateTime?  @default(now())
+  leadId String
+  lead       Lead       @relation(fields: [leadId], references: [id])
+  activityId String?
+  activity   Activity?   @relation(fields: [activityId], references: [id])
+}
+
+model Opportunity {
+  id                   String          @id @default(cuid())
+  name                 String?
+  description          String?
+  stageId String?
+  stage                Stage?  @relation(fields: [stageId], references: [id])
+  accountExecutiveId String?
+  accountExecutive AccountExecutive? @relation(fields: [accountExecutiveId], references: [id])
+  estimatedRevenue     Float?
+  estimatedClosingDate DateTime?
+  probability          Float?
+  ratingID             String?
+  createdAt            DateTime?       @default(now())
+  customerId    Int?
+   customer      Customer? @relation(fields: [customerId], references: [id])
+}
+
+model OpportunityLine {
+  id            String    @id @default(cuid())
+  opportunityId String
+  activityId    String
+  startDate     DateTime
+  endDate       DateTime
+  description   String
+  createdAt     DateTime? @default(now())
+}
+
+model Rating {
+  id          String    @id @default(cuid())
+  name        String?
+  description String?
+  colorHex    String?
+  createdAt   DateTime? @default(now())
+}
+
+model Stage {
+  id           String       @id @default(cuid())
+  name         String?
+  description  String?
+  colorHex     String?
+  createdAt    DateTime?    @default(now())
+  opportunities Opportunity[] 
+}

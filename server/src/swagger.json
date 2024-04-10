@@ -1,0 +1,414 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "1.0.0",
+        "title": "EDU Api Middleware",
+        "description": "A Api Middleware from EDU",
+        "license": {
+            "name": "MIT",
+            "url": "https://opensource.org/licenses/MIT"
+        }
+    },
+    "host": "localhost:5000",
+    "basePath": "/api",
+    "schemes": [
+        "http",
+        "https"
+    ],
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "paths": {
+        "/users": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Get All Users in System",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Users"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Create New User On The System",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "User that we want to create",
+                        "schema": {
+                            "$ref": "#/definitions/Users"
+                        }
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/id"
+                        }
+                    },
+                    "400": {
+                        "description": "Failed. Bad post data."
+                    }
+                }
+            }
+        },
+        "/users/{id}": {
+            "parameters": [
+                {
+                    "name": "id",
+                    "in": "path",
+                    "required": true,
+                    "description": "ID of the cat that we want to",
+                    "type": "string"
+                }
+            ],
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Get User of the given ID",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Users"
+                        }
+                    }
+                }
+            }
+        },        
+        "/teachers": {
+            "get": {
+                "tags": [
+                    "Teacher"
+                ],
+                "summary": "Get All Teacher in System",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Teacher"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Teacher"
+                ],
+                "summary": "Create New Teacher On The System",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "User that we want to create",
+                        "schema": {
+                            "$ref": "#/definitions/Teacher"
+                        }
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Teacher"
+                        }
+                    },
+                    "400": {
+                        "description": "Failed. Bad post data."
+                    }
+                }
+            }
+        },
+        "/teachers/{id}": {
+            "parameters": [
+                {
+                    "name": "id",
+                    "in": "path",
+                    "required": true,
+                    "description": "Id of the Teacher that we want to",
+                    "type": "string"
+                }
+            ],
+            "get": {
+                "tags": [
+                    "Teacher"
+                ],
+                "summary": "Get Teacher of the given ID",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Teacher"
+                        }
+                    }
+                }
+            }
+        },
+        "/schools":{
+            "get": {
+                "tags": [
+                    "School"
+                ],
+                "summary": "Get All School in System",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/School"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "School"
+                ],
+                "summary": "Create New Teacher On The System",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "User that we want to create",
+                        "schema": {
+                            "$ref": "#/definitions/School"
+                        }
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/School"
+                        }
+                    },
+                    "400": {
+                        "description": "Failed. Bad post data."
+                    }
+                }
+            }
+        },
+        "/schools/{id}": {
+            "parameters": [
+                {
+                    "name": "id",
+                    "in": "path",
+                    "required": true,
+                    "description": "Id of the School that we want to",
+                    "type": "string"
+                }
+            ],
+            "get": {
+                "tags": [
+                    "School"
+                ],
+                "summary": "Get Teacher of the given ID",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/School"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "id": {
+            "properties": {
+                "uuid": {
+                    "type": "string"
+                }
+            }
+        },
+        "Users": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "title": "id"
+                },
+                "username": {
+                    "type": "string",
+                    "title": "username"
+                },
+                "name": {
+                    "type": "string",
+                    "title": "name"
+                },
+                "firstName": {
+                    "type": "string",
+                    "title": "firstName"
+                },
+                "lastName": {
+                    "type": "string",
+                    "title": "lastName"
+                },
+                "email": {
+                    "type": "string",
+                    "title": "email"
+                },
+                "password": {
+                    "title": "password",
+                    "type": "string"
+                },
+                "confirmPassword": {
+                    "title": "password",
+                    "type": "boolean"
+                },
+                "phoneNumber": {
+                    "type": "string",
+                    "title": "phoneNumber"
+                },
+                "inactive": {
+                    "type": "boolean",
+                    "title": "inactive"
+                },
+                "country": {
+                    "type": "string",
+                    "title": "country"
+                }
+            }
+        },
+        "Teacher": {
+            "title": "Teacher",
+            "Type": "object",
+            "properties": {
+                "id": {
+                    "type": "number",
+                    "title": "id"
+                },
+                "name": {
+                    "type": "string",
+                    "title": "name"
+                },
+                "author": {
+                    "type": "string",
+                    "title": "author"
+                },
+                "createAt": {
+                    "type": "string",
+                    "format": "date-time",
+                    "title": "createAt"
+                },
+                "status": {
+                    "type": "string",
+                    "title": "status"
+                },
+                "phoneNumber": {
+                    "type": "string",
+                    "title": "phoneNumber"
+                },
+                "address": {
+                    "type": "string",
+                    "title": "address"
+                },
+                "city": {
+                    "type": "string",
+                    "title": "city"
+                },
+                "province": {
+                    "type": "string",
+                    "title": "province"
+                },
+                "district": {
+                    "type": "string",
+                    "title": "district"
+                }
+            },
+            "required": [
+                "id",
+                "name"
+            ]
+        },
+        "School":{
+            "title": "School",
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "title": "id"
+                },
+                "name": {
+                    "type": "string",
+                    "title": "name"
+                },
+                "abbreviation": {
+                    "type": "string",
+                    "title": "abbreviation"
+                },
+                "address": {
+                    "type": "string",
+                    "title": "address"
+                },
+                "city": {
+                    "type": "string",
+                    "title": "city"
+                },
+                "cluster": {
+                    "type": "string",
+                    "title": "cluster"
+                },
+                "gradeSpan": {
+                    "type": "string",
+                    "title": "gradeSpan"
+                },
+                "highGrade": {
+                    "type": "string",
+                    "title": "highGrade"
+                },
+                "lowGrade": {
+                    "type": "string",
+                    "title": "lowGrade"
+                },
+                "phone": {
+                    "type": "string",
+                    "title": "phone"
+                },
+                "principal": {
+                    "type": "string",
+                    "title": "principal"
+                },
+                "region": {
+                    "type": "string",
+                    "title": "region"
+                },
+                "state": {
+                    "type": "string",
+                    "title": "state"
+                },
+                "ward": {
+                    "type": "string",
+                    "title": "ward"
+                },
+                "zip": {
+                    "type": "string",
+                    "title": "zip"
+                }
+            }
+        }
+    }
+}

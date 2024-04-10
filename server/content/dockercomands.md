@@ -1,0 +1,1 @@
+docker build -t uttn-container . && docker run -it --init -p 8888:5000 uttn-container -e dbType=mysql -e dbHost=uttn.cwsainxbbluf.us-west-2.rds.amazonaws.com -e dbPort=3306 -e dbUsername=gmahota -e dbPassword='Agnes270115!' -e dbDatabase='uttn_api_test'
