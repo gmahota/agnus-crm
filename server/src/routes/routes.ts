@@ -4,7 +4,7 @@ import { Router, Request, Response } from "express";
 import adminRouter from "./admin";
 import baseRouter from "./base";
 import crmRouter from "./crm";
-
+import authRouter from "./auth";
 const routes = Router();
 
 /**
@@ -26,5 +26,6 @@ routes.get('/ping', (_req: Request, res: Response) => {
 routes.use('/api/admin',adminRouter);
 routes.use('/api/base',baseRouter);
 routes.use('/api/crm',crmRouter);
+routes.use('/api/auth',authRouter);
 
 export default routes;
