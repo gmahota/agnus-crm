@@ -106,6 +106,7 @@ model Task {
   id            Int       @id @default(autoincrement())
   title         String
   status        String    @default("pending")
+  notes         String?
   recordId      Int?
   record        Record?   @relation(fields: [recordId], references: [id])
   customerId    Int?
@@ -123,6 +124,7 @@ model Task {
   time          String?
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
+  json String?
 }
 
 model AccountExecutive {

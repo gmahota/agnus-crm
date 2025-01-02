@@ -3,6 +3,7 @@ import { Router, Request, Response } from "express";
 import { prisma } from "../lib/prisma";
 
 import { z } from "zod";
+import { json } from "stream/consumers";
 
 const taskSchema = z.object({
   title: z
@@ -21,16 +22,44 @@ const taskSchema = z.object({
   timeBegin: z.coerce.date().optional(),
   timeEnd: z.coerce.date().optional(),
   time: z.string().optional(),
+  notes: z.string().optional(),
+  json:z.string().optional()
 });
 
 const router = Router();
+
+// Get all projects
+router.get("/", async (_, res) => {
+  const items = await prisma.task.findMany({
+    include: { project:true, record:true, customer:true },
+  });
+  res.json(items);
+});
 
 router.post("/", async (req, res) => {
   const validation = taskSchema.safeParse(req.body);
   if (!validation.success)
     return res.status(400).json({ errors: validation.error.errors });
 
-  const task = await prisma.task.create({ data: validation.data });
+   // Extrai o customerId e outros dados do payload
+   const { customerId,recordId,projectId, ...taskData } = validation.data;
+
+  const task = await prisma.task.create(
+    { 
+      data: {
+        ...taskData,
+        customer: customerId? {
+          connect: { id: customerId }, // Conecta o cliente ao task
+        }:undefined,        
+        record: recordId? {
+          connect: { id: recordId }, // Conecta o cliente ao task
+        }:undefined,
+        project:projectId? {
+          connect: { id: projectId }, // Conecta o cliente ao task
+        }:undefined,
+      }      
+      
+    });
   res.json(task);
 });
 
@@ -39,9 +68,24 @@ router.put("/:id", async (req, res) => {
   if (!validation.success)
     return res.status(400).json({ errors: validation.error.errors });
 
+  // Extrai o customerId e outros dados do payload
+  const { customerId,recordId,projectId, ...taskData } = validation.data;
+
   const task = await prisma.task.update({
     where: { id: Number(req.params.id) },
-    data: validation.data,
+    data: {
+        ...taskData,
+        customer: customerId? {
+          connect: { id: customerId }, // Conecta o cliente ao task
+        }:undefined,        
+        record: recordId? {
+          connect: { id: recordId }, // Conecta o cliente ao task
+        }:undefined,
+        project:projectId? {
+          connect: { id: projectId }, // Conecta o cliente ao task
+        }:undefined,
+      },
+      include: { project:true, record:true, customer:true }  
   });
   res.json(task);
 });
