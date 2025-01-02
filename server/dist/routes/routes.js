@@ -8,14 +8,10 @@ const express_1 = require("express");
 const admin_1 = __importDefault(require("./admin"));
 const base_1 = __importDefault(require("./base"));
 const crm_1 = __importDefault(require("./crm"));
+const auth_1 = __importDefault(require("./auth"));
+const task_1 = __importDefault(require("./task"));
+const record_1 = __importDefault(require("./record"));
 const routes = (0, express_1.Router)();
-/**
- * @swagger
- * /:
- *   get:
- *     summary: Home Page
- *     description: Can be used to testing an API.
-*/
 routes.get("/", async (request, response) => {
     response.send("Wellcome!");
 });
@@ -25,4 +21,7 @@ routes.get('/ping', (_req, res) => {
 routes.use('/api/admin', admin_1.default);
 routes.use('/api/base', base_1.default);
 routes.use('/api/crm', crm_1.default);
+routes.use("/api/crm", task_1.default);
+routes.use("/api/crm", record_1.default);
+routes.use('/api/auth', auth_1.default);
 exports.default = routes;

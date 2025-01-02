@@ -60,6 +60,8 @@ model Customer {
   json        String?
   leads        Lead[]  
   opportunities Opportunity[] 
+  records     Record[]
+  tasks       Task[]
 }
 
 model Product {
@@ -72,8 +74,55 @@ model Product {
 model Project {
   id          Int     @id @default(autoincrement())
   code        String? @db.VarChar(50)
-  description String  @db.VarChar(50)
-  status      String  @db.VarChar(20)
+  description String  @db.VarChar(200)
+  status      String?  @db.VarChar(20)
+  records     Record[]
+  tasks       Task[]
+}
+
+model Record {
+  id            Int       @id @default(autoincrement())
+  name          String
+  description   String?
+  customerId    Int
+  customer      Customer  @relation(fields: [customerId], references: [id])
+  projectId     Int?
+  project       Project?  @relation(fields: [projectId], references: [id])
+  tasks         Task[]
+  begin         DateTime?
+  previewStart  DateTime?
+  previewEnd    DateTime?
+  end           DateTime?
+  assigned      String?
+  dueDate       DateTime?
+  timeBegin     DateTime?
+  timeEnd       DateTime?
+  time          String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Task {
+  id            Int       @id @default(autoincrement())
+  title         String
+  status        String    @default("pending")
+  recordId      Int?
+  record        Record?   @relation(fields: [recordId], references: [id])
+  customerId    Int?
+  customer      Customer? @relation(fields: [customerId], references: [id])
+  projectId     Int?
+  project       Project?  @relation(fields: [projectId], references: [id])
+  begin         DateTime?
+  previewStart  DateTime?
+  previewEnd    DateTime?
+  end           DateTime?
+  assigned      String?
+  dueDate       DateTime?
+  timeBegin     DateTime?
+  timeEnd       DateTime?
+  time          String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
 }
 
 model AccountExecutive {
