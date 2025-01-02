@@ -85,6 +85,4 @@ baseRouter.post("/products/", async (request, response) => {
     });
     return response.status(200).json({ _product });
 });
-//Change my password
-//router.post("/change-password", [checkJwt], AuthController.changePassword);
 exports.default = baseRouter;
