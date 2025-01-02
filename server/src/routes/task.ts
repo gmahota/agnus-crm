@@ -3,6 +3,7 @@ import { Router, Request, Response } from "express";
 import { prisma } from "../lib/prisma";
 
 import { z } from "zod";
+import { json } from "stream/consumers";
 
 const taskSchema = z.object({
   title: z
@@ -21,6 +22,8 @@ const taskSchema = z.object({
   timeBegin: z.coerce.date().optional(),
   timeEnd: z.coerce.date().optional(),
   time: z.string().optional(),
+  notes: z.string().optional(),
+  json:z.string().optional()
 });
 
 const router = Router();
@@ -28,7 +31,7 @@ const router = Router();
 // Get all projects
 router.get("/", async (_, res) => {
   const items = await prisma.task.findMany({
-    include: { project:true, record:true },
+    include: { project:true, record:true, customer:true },
   });
   res.json(items);
 });
@@ -81,7 +84,8 @@ router.put("/:id", async (req, res) => {
         project:projectId? {
           connect: { id: projectId }, // Conecta o cliente ao task
         }:undefined,
-      }  
+      },
+      include: { project:true, record:true, customer:true }  
   });
   res.json(task);
 });
