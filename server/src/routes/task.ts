@@ -28,7 +28,7 @@ const taskSchema = z.object({
 
 const router = Router();
 
-// Get all projects
+// Get all tasks
 router.get("/", async (_, res) => {
   const items = await prisma.task.findMany({
     include: { project:true, record:true, customer:true },

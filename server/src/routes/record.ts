@@ -22,6 +22,14 @@ const recordSchema = z.object({
 
 const router = Router();
 
+// Get all Records
+router.get("/", async (_, res) => {
+  const items = await prisma.task.findMany({
+    include: { project:true, record:true, customer:true },
+  });
+  res.json(items);
+});
+
 router.post("/", async (req, res) => {
   const validation = recordSchema.safeParse(req.body);
   if (!validation.success)
