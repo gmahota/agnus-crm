@@ -72,12 +72,21 @@ model Product {
 }
 
 model Project {
-  id          Int     @id @default(autoincrement())
-  code        String? @db.VarChar(50)
-  description String  @db.VarChar(200)
-  status      String?  @db.VarChar(20)
-  records     Record[]
-  tasks       Task[]
+  id                Int       @id @default(autoincrement())
+  code              String?   @db.VarChar(50) // Código único do projeto
+  description       String    @db.VarChar(200) // Descrição do projeto
+  status            String?   @db.VarChar(20) // Status do projeto (e.g., "Em andamento", "Concluído")
+  createdAt         DateTime  @default(now()) // Data de criação do projeto
+  updatedAt         DateTime  @updatedAt // Atualizado automaticamente quando o registro é modificado
+  dateBegin         DateTime? // Data real de início do projeto
+  dateEnd           DateTime? // Data real de término do projeto
+  previewDateStart  DateTime? // Data prevista de início
+  previewDateEnd    DateTime? // Data prevista de término
+  budget            Float?    // Orçamento alocado para o projeto
+  priority          String?   @db.VarChar(20) // Prioridade do projeto (e.g., "Alta", "Média", "Baixa")
+  owner             String?   @db.VarChar(100) // Pessoa ou departamento responsável pelo projeto
+  records           Record[]  // Relação com o modelo Record
+  tasks             Task[]    // Relação com o modelo Task
 }
 
 model Record {
