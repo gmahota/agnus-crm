@@ -8,7 +8,7 @@ import routes from "./routes/routes";
 
 import errorHandler from "./errors/handler";
 
-import { startService } from './services/projectToFolderService.ts'; // Importa o serviço
+import { startService } from './services/projectToFolderService'; // Importa o serviço
 
 dotenv.config();
 
