@@ -9,6 +9,10 @@ const recordSchema = z.object({
   description: z.string().optional(),
   customerId: z.coerce.number().int().positive(),
   projectId: z.coerce.number().int().optional(),
+  type: z.string().min(1, "Type is required"), // Novo campo obrigatório
+  classification: z.string().optional(), // Novo campo opcional
+  nature: z.string().optional(), // Novo campo opcional
+  status: z.string().optional(), // Novo campo opcional
   begin: z.coerce.date().optional(),
   previewStart: z.coerce.date().optional(),
   previewEnd: z.coerce.date().optional(),

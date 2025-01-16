@@ -8,7 +8,8 @@ import routes from "./routes/routes";
 
 import errorHandler from "./errors/handler";
 
-import { startService } from './services/projectToFolderService'; // Importa o serviço
+import * as projectsServ from "./services/projectsToFolderServices"; // Importa o serviço
+import * as tasksSrv from './services/tasksToFolderServices'; // Importa o serviço
 
 dotenv.config();
 
@@ -23,6 +24,7 @@ app.use(routes);
 app.use("/uploads", express.static(path.join(__dirname, "..", "uploads")));
 app.use(errorHandler);
 
-startService();
+projectsServ.startService();
+tasksSrv.startService();
 
 app.listen(port);
