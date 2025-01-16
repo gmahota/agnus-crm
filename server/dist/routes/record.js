@@ -19,6 +19,13 @@ const recordSchema = zod_1.z.object({
     time: zod_1.z.string().optional(),
 });
 const router = (0, express_1.Router)();
+// Get all Records
+router.get("/", async (_, res) => {
+    const items = await prisma_1.prisma.record.findMany({
+        include: { project: true, tasks: true, customer: true },
+    });
+    res.json(items);
+});
 router.post("/", async (req, res) => {
     const validation = recordSchema.safeParse(req.body);
     if (!validation.success)

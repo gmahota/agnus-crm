@@ -8,6 +8,9 @@ import routes from "./routes/routes";
 
 import errorHandler from "./errors/handler";
 
+import * as projectsServ from "./services/projectsToFolderServices"; // Importa o serviço
+import * as tasksSrv from './services/tasksToFolderServices'; // Importa o serviço
+
 dotenv.config();
 
 const app = express();
@@ -20,5 +23,8 @@ app.use(express.json());
 app.use(routes);
 app.use("/uploads", express.static(path.join(__dirname, "..", "uploads")));
 app.use(errorHandler);
+
+projectsServ.startService();
+tasksSrv.startService();
 
 app.listen(port);
