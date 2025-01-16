@@ -57,7 +57,7 @@ async function fetchTasks(): Promise<string[]> {
 
 // Função para iniciar o serviço
 export function startService(): void {
-  cron.schedule("*/1 * * * *", async () => {
+  cron.schedule("*/15 * * * *", async () => {
     console.log("Iniciando tarefa para criar pastas de tarefas...");
     try {
       const taskFolders = await fetchTasks();
