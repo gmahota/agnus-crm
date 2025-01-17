@@ -8,8 +8,8 @@ import routes from "./routes/routes";
 
 import errorHandler from "./errors/handler";
 
-import swaggerUi from "swagger-ui-express";
-import * as swaggerDocument from './swagger.json'
+import * as projectsServ from "./services/projectsToFolderServices"; // Importa o serviço
+import * as tasksSrv from './services/tasksToFolderServices'; // Importa o serviço
 
 dotenv.config();
 
@@ -18,11 +18,13 @@ const app = express();
 // Constants
 const port = process.env.PORT || 5000;
 
-app.use("/api-docs",swaggerUi.serve,swaggerUi.setup(swaggerDocument));
 app.use(cors());
 app.use(express.json());
 app.use(routes);
 app.use("/uploads", express.static(path.join(__dirname, "..", "uploads")));
 app.use(errorHandler);
+
+projectsServ.startService();
+tasksSrv.startService();
 
 app.listen(port);

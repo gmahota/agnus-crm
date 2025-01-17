@@ -12,8 +12,6 @@ import { createUserByEmailAndPassword, findUserByEmail } from "../services/auth/
 import { generateTokens } from "../lib/jwt";
 import { addRefreshTokenToWhitelist } from "../services/auth/auth";
 
-import { User } from "@prisma/client";
-
 const authRouter = Router();
 
 authRouter.post('/register', async (request: Request, res: Response, next: NextFunction) => {

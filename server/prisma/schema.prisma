@@ -6,14 +6,14 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
+  provider          = "mysql"
+  url               = env("DATABASE_URL")
   shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
 }
 
 model User {
-  id            String         @id @unique @default(uuid())
-  email           String   @unique
+  id              String         @id @unique @default(uuid())
+  email           String         @unique
   name            String?
   username        String?
   firstName       String?
@@ -21,11 +21,11 @@ model User {
   phoneNumber     String?
   password        String
   confirmPassword Boolean?
-  inactive        Boolean? @default(false)
-  country         String? @default("Moz")
-  refreshTokens RefreshToken[]
-  createdAt     DateTime       @default(now())
-  updatedAt     DateTime       @updatedAt
+  inactive        Boolean?       @default(false)
+  country         String?        @default("Moz")
+  refreshTokens   RefreshToken[]
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
   profile         Profile?
 }
 
@@ -42,42 +42,107 @@ model RefreshToken {
 model Profile {
   id     Int     @id @default(autoincrement())
   bio    String?
-  userId String?    @unique
+  userId String? @unique
   user   User?   @relation(fields: [userId], references: [id])
 }
 
 model Customer {
-  id           Int       @id @default(autoincrement())
-  code        String?
-  name         String?   @db.VarChar(50)
-  address      String?   @db.VarChar(50)
-  vat          String?   @db.VarChar(20)
-  province     String?   @db.VarChar(50)
-  phoneNumber  String    @db.VarChar(20)
-  cellphone   String?
-  email       String?
-  status       String?   @db.VarChar(255)
-  json        String?
-  leads        Lead[]  
-  opportunities Opportunity[] 
+  id            Int           @id @default(autoincrement())
+  code          String?
+  name          String?       @db.VarChar(50)
+  address       String?       @db.VarChar(50)
+  vat           String?       @db.VarChar(20)
+  province      String?       @db.VarChar(50)
+  phoneNumber   String        @db.VarChar(20)
+  cellphone     String?
+  email         String?
+  status        String?       @db.VarChar(255)
+  json          String?
+  leads         Lead[]
+  opportunities Opportunity[]
+  records       Record[]
+  tasks         Task[]
 }
 
 model Product {
-  id          Int     @id @default(autoincrement())
-  code        String  @db.VarChar(50)
-  description String  @db.VarChar(50)
+  id          Int    @id @default(autoincrement())
+  code        String @db.VarChar(50)
+  description String @db.VarChar(50)
   price       Float
 }
 
 model Project {
-  id          Int     @id @default(autoincrement())
-  code        String? @db.VarChar(50)
-  description String  @db.VarChar(50)
-  status      String  @db.VarChar(20)
+  id               Int       @id @default(autoincrement())
+  code             String?   @db.VarChar(50) // Código único do projeto
+  description      String    @db.VarChar(200) // Descrição do projeto
+  status           String?   @db.VarChar(20) // Status do projeto (e.g., "Em andamento", "Concluído")
+  createdAt        DateTime  @default(now()) // Data de criação do projeto
+  updatedAt        DateTime  @updatedAt // Atualizado automaticamente quando o registro é modificado
+  dateBegin        DateTime? // Data real de início do projeto
+  dateEnd          DateTime? // Data real de término do projeto
+  previewDateStart DateTime? // Data prevista de início
+  previewDateEnd   DateTime? // Data prevista de término
+  budget           Float? // Orçamento alocado para o projeto
+  priority         String?   @db.VarChar(20) // Prioridade do projeto (e.g., "Alta", "Média", "Baixa")
+  owner            String?   @db.VarChar(100) // Pessoa ou departamento responsável pelo projeto
+  records          Record[] // Relação com o modelo Record
+  tasks            Task[] // Relação com o modelo Task
+}
+
+model Record {
+  id             Int       @id @default(autoincrement())
+  name           String // Nome ou título do registro
+  description    String? // Descrição opcional do registro
+  customerId     Int // Relacionado ao cliente
+  customer       Customer  @relation(fields: [customerId], references: [id]) // Relacionamento com cliente
+  projectId      Int? // Relacionado ao projeto (opcional)
+  project        Project?  @relation(fields: [projectId], references: [id]) // Relacionamento com projeto
+  tasks          Task[] // Tarefas associadas ao registro
+  type           String // Tipo de registro (ex.: "tarefa", "evento", "chamada")
+  classification String? // Classificação funcional (ex.: "Financeiro", "Operacional")
+  nature         String? // Natureza ou caráter (ex.: "Interno", "Urgente")
+  begin          DateTime? // Data de início
+  previewStart   DateTime? // Início previsto
+  previewEnd     DateTime? // Fim previsto
+  end            DateTime? // Data de término
+  assigned       String? // Pessoa ou equipe responsável
+  dueDate        DateTime? // Prazo de entrega
+  timeBegin      DateTime? // Hora de início
+  timeEnd        DateTime? // Hora de término
+  time           String? // Duração ou tempo relacionado
+  createdAt      DateTime  @default(now()) // Data de criação
+  updatedAt      DateTime  @updatedAt // Data da última atualização
+  requester      String?
+  json           Json? // Dados adicionais em formato JSON
+}
+
+model Task {
+  id           Int       @id @default(autoincrement())
+  title        String
+  status       String    @default("pending")
+  notes        String?
+  recordId     Int?
+  record       Record?   @relation(fields: [recordId], references: [id])
+  customerId   Int?
+  customer     Customer? @relation(fields: [customerId], references: [id])
+  projectId    Int?
+  project      Project?  @relation(fields: [projectId], references: [id])
+  begin        DateTime?
+  previewStart DateTime?
+  previewEnd   DateTime?
+  end          DateTime?
+  assigned     String?
+  dueDate      DateTime?
+  timeBegin    DateTime?
+  timeEnd      DateTime?
+  time         String?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  json         String?
 }
 
 model AccountExecutive {
-  id            String      @id @default(cuid())
+  id            String        @id @default(cuid())
   name          String?
   description   String?
   phone         String?
@@ -88,78 +153,78 @@ model AccountExecutive {
   province      String?
   country       String?
   systemUserID  String?
-  createdAt     DateTime?   @default(now())
-  leads         Lead[]      
-  opportunities Opportunity[] 
+  createdAt     DateTime?     @default(now())
+  leads         Lead[]
+  opportunities Opportunity[]
 }
 
 model Activity {
-  id           String     @id @default(cuid())
-  name         String?
-  createdAt    DateTime?  @default(now())
-  description  String?
-  colorHex     String?
-  leadlines    LeadLine[] 
+  id          String     @id @default(cuid())
+  name        String?
+  createdAt   DateTime?  @default(now())
+  description String?
+  colorHex    String?
+  leadlines   LeadLine[]
 }
 
 model Channel {
-  id           String     @id @default(cuid())
-  name         String?
-  createdAt    DateTime?  @default(now())
-  description  String?
-  colorHex     String?
-  leads        Lead[]    
+  id          String    @id @default(cuid())
+  name        String?
+  createdAt   DateTime? @default(now())
+  description String?
+  colorHex    String?
+  leads       Lead[]
 }
 
 model Lead {
-  id               String          @id @default(cuid())
-  name             String
-  description      String?
-  street1          String?
-  street2          String?
-  city             String?
-  province         String?
-  country          String?
-  isQualified      Boolean?
-  isConverted      Boolean?
-  channelId        String?
-  customerId    Int?
-  channel          Channel? @relation(fields: [channelId], references: [id])
-  customer      Customer? @relation(fields: [customerId], references: [id])
+  id                 String            @id @default(cuid())
+  name               String
+  description        String?
+  street1            String?
+  street2            String?
+  city               String?
+  province           String?
+  country            String?
+  isQualified        Boolean?
+  isConverted        Boolean?
+  channelId          String?
+  customerId         Int?
+  channel            Channel?          @relation(fields: [channelId], references: [id])
+  customer           Customer?         @relation(fields: [customerId], references: [id])
   accountExecutiveId String?
-  accountExecutive AccountExecutive? @relation(fields: [accountExecutiveId], references: [id])
-  leadlines        LeadLine[]      
-  createdAt        DateTime?       @default(now())
+  accountExecutive   AccountExecutive? @relation(fields: [accountExecutiveId], references: [id])
+  leadlines          LeadLine[]
+  createdAt          DateTime?         @default(now())
 }
 
 model LeadLine {
-  id         String     @id @default(cuid())
-  name       String
+  id          String    @id @default(cuid())
+  name        String
   description String?
-  startDate  DateTime?
-  endDate    DateTime?
-  createdAt  DateTime?  @default(now())
-  leadId String
-  lead       Lead       @relation(fields: [leadId], references: [id])
-  activityId String?
-  activity   Activity?   @relation(fields: [activityId], references: [id])
+  startDate   DateTime?
+  endDate     DateTime?
+  createdAt   DateTime? @default(now())
+  leadId      String
+  lead        Lead      @relation(fields: [leadId], references: [id])
+  activityId  String?
+  activity    Activity? @relation(fields: [activityId], references: [id])
 }
 
 model Opportunity {
-  id                   String          @id @default(cuid())
+  id                   String            @id @default(cuid())
   name                 String?
   description          String?
-  stageId String?
-  stage                Stage?  @relation(fields: [stageId], references: [id])
-  accountExecutiveId String?
-  accountExecutive AccountExecutive? @relation(fields: [accountExecutiveId], references: [id])
+  stageId              String?
+  stage                Stage?            @relation(fields: [stageId], references: [id])
+  accountExecutiveId   String?
+  accountExecutive     AccountExecutive? @relation(fields: [accountExecutiveId], references: [id])
   estimatedRevenue     Float?
   estimatedClosingDate DateTime?
   probability          Float?
   ratingID             String?
-  createdAt            DateTime?       @default(now())
-  customerId    Int?
-   customer      Customer? @relation(fields: [customerId], references: [id])
+  createdAt            DateTime?         @default(now())
+  customerId           Int?
+  customer             Customer?         @relation(fields: [customerId], references: [id])
 }
 
 model OpportunityLine {
@@ -181,10 +246,10 @@ model Rating {
 }
 
 model Stage {
-  id           String       @id @default(cuid())
-  name         String?
-  description  String?
-  colorHex     String?
-  createdAt    DateTime?    @default(now())
-  opportunities Opportunity[] 
+  id            String        @id @default(cuid())
+  name          String?
+  description   String?
+  colorHex      String?
+  createdAt     DateTime?     @default(now())
+  opportunities Opportunity[]
 }
