@@ -8,6 +8,10 @@ const recordSchema = zod_1.z.object({
     description: zod_1.z.string().optional(),
     customerId: zod_1.z.coerce.number().int().positive(),
     projectId: zod_1.z.coerce.number().int().optional(),
+    type: zod_1.z.string().min(1, "Type is required"), // Novo campo obrigatório
+    classification: zod_1.z.string().optional(), // Novo campo opcional
+    nature: zod_1.z.string().optional(), // Novo campo opcional
+    status: zod_1.z.string().optional(), // Novo campo opcional
     begin: zod_1.z.coerce.date().optional(),
     previewStart: zod_1.z.coerce.date().optional(),
     previewEnd: zod_1.z.coerce.date().optional(),

@@ -31,3 +31,5 @@ yarn-error.log*
 yarn.lock
 
 ormconfig.json
+
+/dists/*

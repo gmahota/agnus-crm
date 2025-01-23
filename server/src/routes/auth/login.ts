@@ -1,7 +1,7 @@
 import { Router, Request, Response } from 'express';
 import { prisma } from "../../lib/prisma";
 import bcrypt from "bcrypt";
-import { createToken } from '../../lib/crypto';
+import { generateAccessToken } from "../../lib/auth/jwt";
 
 import { z } from "zod";
 
@@ -34,8 +34,8 @@ router.post('/login', async (req: Request, res: Response) => {
             return res.status(401).json({ message: 'Invalid password' });
         }
         // TODO: Generate and return JWT token
-        const jwtToken = createToken({ userId: user.id });
-        
+        const jwtToken = generateAccessToken( user);
+      
         res.status(200).json({
           message: "Login successful",
           token: jwtToken,

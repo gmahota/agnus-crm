@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const prisma_1 = require("../../lib/prisma");
 const bcrypt_1 = __importDefault(require("bcrypt"));
-const crypto_1 = require("../../lib/crypto");
+const jwt_1 = require("../../lib/auth/jwt");
 const zod_1 = require("zod");
 const router = (0, express_1.Router)();
 // Zod schemas
@@ -31,7 +31,7 @@ router.post('/login', async (req, res) => {
             return res.status(401).json({ message: 'Invalid password' });
         }
         // TODO: Generate and return JWT token
-        const jwtToken = (0, crypto_1.createToken)({ userId: user.id });
+        const jwtToken = (0, jwt_1.generateAccessToken)(user);
         res.status(200).json({
             message: "Login successful",
             token: jwtToken,
