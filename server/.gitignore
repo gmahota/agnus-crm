@@ -32,4 +32,4 @@ yarn.lock
 
 ormconfig.json
 
-/dists/*
+/dist/*
