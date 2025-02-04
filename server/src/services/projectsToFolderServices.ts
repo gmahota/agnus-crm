@@ -10,7 +10,7 @@ const PROJECTS_ROUTE = "base/projects";
 
 // Credenciais de login (caso a API exija autenticação)
 const credentials = {
-  username: process.env.API_USERNAME || "admin",
+  email: process.env.API_USERNAME || "admin",
   password: process.env.API_PASSWORD || "password123",
 };
 
@@ -22,13 +22,13 @@ interface Project {
 // **Função para autenticação e obtenção do token**
 async function getAuthToken(): Promise<string | null> {
   try {
-    const response = await axios.post<{ api_token: string }>(
+    const response = await axios.post<{ accessToken: string }>(
       `${API_URL}${AUTH_ROUTE}`,
       credentials
     );
 
-    if (response.status === 200 && response.data.api_token) {
-      return response.data.api_token;
+    if (response.status === 200 && response.data.accessToken) {
+      return response.data.accessToken;
     } else {
       throw new Error("Resposta de login inválida.");
     }

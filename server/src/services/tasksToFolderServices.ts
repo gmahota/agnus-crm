@@ -22,13 +22,13 @@ interface Task {
 // Função para obter o token de autenticação
 async function getAuthToken(): Promise<string | null> {
   try {
-    const response = await axios.post<{ api_token: string }>(
+    const response = await axios.post<{ accessToken: string }>(
       `${API_URL}${AUTH_ROUTE}`,
       credentials
     );
 
-    if (response.status === 200 && response.data.api_token) {
-      return response.data.api_token;
+    if (response.status === 200 && response.data.accessToken) {
+      return response.data.accessToken;
     } else {
       throw new Error("Resposta de login inválida.");
     }
