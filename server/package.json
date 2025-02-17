@@ -29,12 +29,12 @@
     "@types/node-cron": "^3.0.11",
     "@types/uuid": "^8.3.0",
     "@types/yup": "^0.29.10",
-    "prisma": "^6.2.0",
+    "prisma": "^6.3.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.4.5"
   },
   "dependencies": {
-    "@prisma/client": "^6.2.0",
+    "@prisma/client": "^6.3.1",
     "app-root-path": "^3.0.0",
     "axios": "^1.7.9",
     "bcrypt": "^5.1.1",

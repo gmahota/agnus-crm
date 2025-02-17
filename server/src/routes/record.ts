@@ -27,9 +27,18 @@ const recordSchema = z.object({
 const router = Router();
 
 // Get all Records
-router.get("/", async (_, res) => {
+router.get("/", async (req, res) => {
+  const { project } = req.query;
+  const filter: any = {};
+
+  console.log(req.query)
+  if (project) {
+    filter.projectId = Number(project);
+  }
+
   const items = await prisma.record.findMany({
-    include: { project:true, tasks:true, customer:true },
+    where: filter,
+    include: { project: true, tasks: true, customer: true },
   });
   res.json(items);
 });
